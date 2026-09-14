@@ -72,6 +72,10 @@ UPDATE afdelingen SET hoofd = 8000 WHERE anr = 50;
 -- A
 CREATE SEQUENCE afd_anr_seq START WITH 60 INCREMENT BY 10;
 
+-- C
+ALTER TABLE afdelingen  ALTER COLUMN anr TYPE NUMERIC(3);
+ALTER TABLE medewerkers ALTER COLUMN afd TYPE NUMERIC(3);
+
 -- B
 INSERT INTO afdelingen (anr, naam, locatie) VALUES (nextval('afd_anr_seq'), 'INKOOP', 'UTRECHT');
 INSERT INTO afdelingen (anr, naam, locatie) VALUES (nextval('afd_anr_seq'), 'ICT', 'AMERSFOORT');
@@ -79,9 +83,7 @@ INSERT INTO afdelingen (anr, naam, locatie) VALUES (nextval('afd_anr_seq'), 'HRM
 INSERT INTO afdelingen (anr, naam, locatie) VALUES (nextval('afd_anr_seq'), 'MARKETING', 'HILVERSUM');
 INSERT INTO afdelingen (anr, naam, locatie) VALUES (nextval('afd_anr_seq'), 'LOGISTIEK', 'TILBURG');
 
--- C
-ALTER TABLE afdelingen  ALTER COLUMN anr TYPE NUMERIC(3);
-ALTER TABLE medewerkers ALTER COLUMN afd TYPE NUMERIC(3);
+
 
 -- S1.4. Adressen
 --
