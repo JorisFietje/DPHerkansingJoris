@@ -40,7 +40,12 @@ ALTER TABLE medewerkers ADD COLUMN geslacht CHAR(1);
 ALTER TABLE medewerkers
     ADD CONSTRAINT m_geslacht_chk CHECK (geslacht IN ('M', 'V'));
 
-
+-- Test van de beperkingsregel (los uitgevoerd):
+-- UPDATE medewerkers SET geslacht = 'X' WHERE mnr = 7369;
+--
+-- ERROR: new row for relation "medewerkers" violates check constraint "m_geslacht_chk"
+-- SQL state: 23514
+-- Detail: Failing row contains (7369, SMIT, N, TRAINER, 7902, 1985-12-17, 800.00, null, 20, X).
 
 -- S1.2. Nieuwe afdeling
 --
