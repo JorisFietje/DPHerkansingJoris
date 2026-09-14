@@ -79,7 +79,6 @@ CREATE SEQUENCE afd_anr_seq START WITH 60 INCREMENT BY 10;
 
 -- C
 ALTER TABLE afdelingen  ALTER COLUMN anr TYPE NUMERIC(3);
-ALTER TABLE medewerkers ALTER COLUMN afd TYPE NUMERIC(3);
 
 -- B
 INSERT INTO afdelingen (anr, naam, locatie) VALUES (nextval('afd_anr_seq'), 'INKOOP', 'UTRECHT');
@@ -132,11 +131,11 @@ ALTER TABLE medewerkers ADD CONSTRAINT m_comm_chk CHECK (
     OR (functie <> 'VERKOPER' AND comm IS NULL)
 );
 
-INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
-VALUES (8001, 'MULLER', 'TJ', 'TRAINER', 7566, '1982-08-18', 2000, 500);
-
-INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
-VALUES (8002, 'JANSEN', 'M', 'VERKOPER', 7698, '1981-07-17', 1000, NULL);
+--INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
+--VALUES (8001, 'MULLER', 'TJ', 'TRAINER', 7566, '1982-08-18', 2000, 500);
+--
+--INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, comm)
+--VALUES (8002, 'JANSEN', 'M', 'VERKOPER', 7698, '1981-07-17', 1000, NULL);
 
 
 
