@@ -1,18 +1,35 @@
 package domain;
 
+import jakarta.persistence.*;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "reiziger")
 public class Reiziger {
 
+    @Id
+    @Column(name = "reiziger_id")
     private int reizigerId;
+
+    @Column(name = "voorletters")
     private String voorletters;
+
+    @Column(name = "tussenvoegsel")
     private String tussenvoegsel;
+
+    @Column(name = "achternaam")
     private String achternaam;
+
+    @Column(name = "geboortedatum")
     private Date geboortedatum;
 
+    @Transient
     private Adres adres;
+
+    @Transient
     private List<OvChipkaart> ovChipkaart = new ArrayList<>();
 
     public Reiziger() {
