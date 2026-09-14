@@ -55,6 +55,7 @@ SELECT cursus, begindatum FROM uitvoeringen WHERE locatie IN ('UTRECHT', 'MAASTR
 -- S2.4. Namen
 --
 -- Geef de naam en voorletters van alle medewerkers, behalve van R. Jansen.
+
 DROP VIEW IF EXISTS s2_4; CREATE OR REPLACE VIEW s2_4 AS                                                     -- [TEST]
 SELECT naam, voorl FROM medewerkers WHERE NOT (naam = 'JANSEN' AND voorl = 'R');
 
@@ -65,20 +66,24 @@ SELECT naam, voorl FROM medewerkers WHERE NOT (naam = 'JANSEN' AND voorl = 'R');
 -- komende 2 maart. De cursus wordt gegeven in Leerdam door Nick Smit.
 -- Voeg deze gegevens toe.                                                                                       -- [TEST]
 
+INSERT INTO uitvoeringen (cursus, begindatum, docent, locatie)
+VALUES ('S02', '2027-03-02', 7369, 'LEERDAM');
 
 -- S2.6. Stagiairs
 --
 -- Neem één van je collega-studenten aan als stagiair ('STAGIAIR') en
 -- voer zijn of haar gegevens in. Kies een personeelnummer boven de 8000.
                                                                                         -- [TEST]
-
+INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal)
+VALUES (8010, 'LEANDER', 'R', 'STAGIAIR', 7839, '2003-05-14', 700);
 
 -- S2.7. Nieuwe schaal
 --
 -- We breiden het salarissysteem uit naar zes schalen. Voer een extra schaal in voor mensen die
 -- tussen de 3001 en 4000 euro verdienen. Zij krijgen een toelage van 500 euro.
                                                                                        -- [TEST]
-
+INSERT INTO schalen (snr, ondergrens, bovengrens, toelage)
+VALUES (6, 3001, 4000, 500);
 
 -- S2.8. Nieuwe cursus
 --
@@ -86,12 +91,29 @@ SELECT naam, voorl FROM medewerkers WHERE NOT (naam = 'JANSEN' AND voorl = 'R');
 -- Voeg deze cursus met code 'D&P' toe, maak twee uitvoeringen in Leerdam en schrijf drie
 -- mensen in.                                                                                      -- [TEST]
 
+INSERT INTO cursussen (code, omschrijving, type, lengte)
+VALUES ('D&P', 'Data & Persistency', 'BLD', 6);
+
+INSERT INTO uitvoeringen (cursus, begindatum, docent, locatie)
+VALUES ('D&P', '2027-01-15', 7369, 'LEERDAM'),
+       ('D&P', '2027-03-01', 7566, 'LEERDAM');
+
+INSERT INTO inschrijvingen (cursist, cursus, begindatum, evaluatie)
+VALUES (7499, 'D&P', '2027-01-15', NULL),
+       (7521, 'D&P', '2027-01-15', NULL),
+       (7654, 'D&P', '2027-01-15', NULL);
 
 -- S2.9. Salarisverhoging
 --
 -- De medewerkers van de afdeling VERKOOP krijgen een salarisverhoging
 -- van 5.5%, behalve de manager van de afdeling, deze krijgt namelijk meer: 7%.
 -- Voer deze verhogingen door.
+
+UPDATE medewerkers SET maandsal = maandsal * 1.055
+WHERE afd = 30 AND functie <> 'MANAGER';
+
+UPDATE medewerkers SET maandsal = maandsal * 1.07
+WHERE afd = 30 AND functie = 'MANAGER';
 
 
 -- S2.10. Concurrent
@@ -102,6 +124,18 @@ SELECT naam, voorl FROM medewerkers WHERE NOT (naam = 'JANSEN' AND voorl = 'R');
 -- Zijn collega Alders heeft ook plannen om te vertrekken. Verwijder ook zijn gegevens.
 -- Waarom lukt dit (niet)?
 
+DELETE FROM medewerkers WHERE mnr = 7654;
+
+DELETE FROM medewerkers WHERE mnr = 7499;
+
+--ERROR:  Key (mnr)=(7654) is still referenced from table "inschrijvingen".update or delete on table "medewerkers" violates foreign key constraint "i_cursist_fk" on table "inschrijvingen"
+--
+--ERROR:  update or delete on table "medewerkers" violates foreign key constraint "i_cursist_fk" on table "inschrijvingen"
+--SQL state: 23503
+--Detail: Key (mnr)=(7654) is still referenced from table "inschrijvingen".
+
+-- Uitleg: Alders kan niet verwijderd worden omdat er in andere tabellen nog
+-- records naar hem verwijzen via een foreign key.
 
 -- S2.11. Nieuwe afdeling
 --
@@ -109,7 +143,13 @@ SELECT naam, voorl FROM medewerkers WHERE NOT (naam = 'JANSEN' AND voorl = 'R');
 -- onder de hoede van De Koning. Kies een personeelnummer boven de 8000.
 -- Zorg voor de juiste invoer van deze gegevens.
                                                                                       -- [TEST]
+INSERT INTO afdelingen (anr, naam, locatie)
+VALUES (50, 'FINANCIEN', 'LEERDAM');
 
+INSERT INTO medewerkers (mnr, naam, voorl, functie, chef, gbdatum, maandsal, afd)
+VALUES (8020, 'JOUWNAAM', 'J', 'MANAGER', 7839, '2000-01-01', 4000, 50);
+
+UPDATE afdelingen SET hoofd = 8020 WHERE anr = 50;
 
 
 -- -------------------------[ HU TESTRAAMWERK ]--------------------------------
