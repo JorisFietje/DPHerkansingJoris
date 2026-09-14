@@ -100,6 +100,9 @@ fabric.properties
 
 ### Personal ignores
 .idea/
+target/
+.DS_Store
+~$*.docx
 practicum/feedback.txt
 practicum/Hibernate_stappen.txt
 practicum/lib/
