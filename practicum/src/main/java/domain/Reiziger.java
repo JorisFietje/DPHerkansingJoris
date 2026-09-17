@@ -29,7 +29,7 @@ public class Reiziger {
     @OneToOne(mappedBy = "reiziger", cascade = CascadeType.ALL)
     private Adres adres;
 
-    @Transient
+    @OneToMany(mappedBy = "reiziger", cascade = CascadeType.ALL)
     private List<OvChipkaart> ovChipkaart = new ArrayList<>();
 
     public Reiziger() {

@@ -8,15 +8,28 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "ov_chipkaart")
 public class OvChipkaart {
 
+    @Id
+    @Column(name = "kaart_nummer")
     private int kaartNummer;
+
+    @Column(name = "geldig_tot")
     private Date geldigTot;
+
+    @Column(name = "klasse")
     private BigInteger klasse;
+
+    @Column(name = "saldo")
     private BigDecimal saldo;
 
+    @ManyToOne
+    @JoinColumn(name = "reiziger_id", nullable = false)
     private Reiziger reiziger;
 
+    @Transient
     private List<Product> producten = new ArrayList<>();
 
     public OvChipkaart() {
