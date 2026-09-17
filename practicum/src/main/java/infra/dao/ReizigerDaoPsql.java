@@ -28,6 +28,10 @@ public class ReizigerDaoPsql implements IReizigerDao {
             pst.setDate(5, reiziger.getGeboortedatum());
             pst.executeUpdate();
         }
+
+        if (reiziger.getAdres() != null) {
+            adresDao.save(reiziger.getAdres());
+        }
     }
 
     @Override
@@ -43,10 +47,19 @@ public class ReizigerDaoPsql implements IReizigerDao {
             pst.setInt(5, reiziger.getReizigerId());
             pst.executeUpdate();
         }
+
+        if (reiziger.getAdres() != null) {
+            adresDao.update(reiziger.getAdres());
+        }
     }
 
     @Override
     public void delete(Reiziger reiziger) throws SQLException {
+        Adres adres = adresDao.findByReiziger(reiziger);
+        if (adres != null) {
+            adresDao.delete(adres);
+        }
+
         String sql = "DELETE FROM reiziger WHERE reiziger_id = ?";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setInt(1, reiziger.getReizigerId());
@@ -98,13 +111,15 @@ public class ReizigerDaoPsql implements IReizigerDao {
 
 
     private Reiziger buildReiziger(ResultSet rs) throws SQLException {
-        return new Reiziger(
+        Reiziger reiziger = new Reiziger(
                 rs.getInt("reiziger_id"),
                 rs.getString("voorletters"),
                 rs.getString("tussenvoegsel"),
                 rs.getString("achternaam"),
                 rs.getDate("geboortedatum")
         );
+        reiziger.setAdres(adresDao.findByReiziger(reiziger));
+        return reiziger;
     }
 
     public void setAdresDao(IAdresDao adresDao) {
