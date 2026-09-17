@@ -5,6 +5,7 @@ import domain.IAdresDao;
 import domain.Reiziger;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdresDaoPsql implements IAdresDao {
@@ -48,20 +49,71 @@ public class AdresDaoPsql implements IAdresDao {
 
     @Override
     public void delete(Adres adres) throws SQLException {
+        String sql = "DELETE FROM adres WHERE adres_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setInt(1, adres.getAdresId());
+            pst.executeUpdate();
+        }
     }
 
     @Override
     public Adres findById(int id) throws SQLException {
-        return null;
+        String sql = "SELECT * FROM adres WHERE adres_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setInt(1, id);
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    return new Adres(
+                            rs.getInt("adres_id"),
+                            rs.getString("postcode"),
+                            rs.getString("huisnummer"),
+                            rs.getString("straat"),
+                            rs.getString("woonplaats")
+                    );
+                }
+                return null;
+            }
+        }
     }
 
     @Override
     public Adres findByReiziger(Reiziger reiziger) throws SQLException {
-        return null;
+        String sql = "SELECT * FROM adres WHERE reiziger_id = ?";
+        try (PreparedStatement pst = connection.prepareStatement(sql)) {
+            pst.setInt(1, reiziger.getReizigerId());
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    Adres adres = new Adres(
+                            rs.getInt("adres_id"),
+                            rs.getString("postcode"),
+                            rs.getString("huisnummer"),
+                            rs.getString("straat"),
+                            rs.getString("woonplaats")
+                    );
+                    adres.setReiziger(reiziger);
+                    return adres;
+                }
+                return null;
+            }
+        }
     }
 
     @Override
     public List<Adres> findAll() throws SQLException {
-        return null;
+        String sql = "SELECT * FROM adres";
+        List<Adres> adressen = new ArrayList<>();
+        try (PreparedStatement pst = connection.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                adressen.add(new Adres(
+                        rs.getInt("adres_id"),
+                        rs.getString("postcode"),
+                        rs.getString("huisnummer"),
+                        rs.getString("straat"),
+                        rs.getString("woonplaats")
+                ));
+            }
+        }
+        return adressen;
     }
 }
