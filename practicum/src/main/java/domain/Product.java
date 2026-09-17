@@ -6,13 +6,24 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "product")
 public class Product {
 
+    @Id
+    @Column(name = "product_nummer")
     private int productNummer;
+
+    @Column(name = "naam")
     private String naam;
+
+    @Column(name = "beschrijving")
     private String beschrijving;
+
+    @Column(name = "prijs")
     private BigDecimal prijs;
 
+    @ManyToMany(mappedBy = "producten")
     private List<OvChipkaart> ovChipKaarten = new ArrayList<>();
 
     public Product() {
@@ -81,7 +92,6 @@ public class Product {
 
     @Override
     public String toString() {
-        return String.format("Product {#%d %s, %s, op %d kaart(en)}",
-                productNummer, naam, prijs, ovChipKaarten.size());
+        return String.format("Product {#%d %s, %s}", productNummer, naam, prijs);
     }
 }

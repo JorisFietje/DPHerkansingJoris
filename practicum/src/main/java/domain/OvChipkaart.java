@@ -29,7 +29,12 @@ public class OvChipkaart {
     @JoinColumn(name = "reiziger_id", nullable = false)
     private Reiziger reiziger;
 
-    @Transient
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "ov_chipkaart_product",
+            joinColumns = @JoinColumn(name = "kaart_nummer"),
+            inverseJoinColumns = @JoinColumn(name = "product_nummer")
+    )
     private List<Product> producten = new ArrayList<>();
 
     public OvChipkaart() {
