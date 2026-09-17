@@ -32,6 +32,9 @@ public class ReizigerDaoPsql implements IReizigerDao {
         if (reiziger.getAdres() != null) {
             adresDao.save(reiziger.getAdres());
         }
+        for (OvChipkaart ovChipkaart : reiziger.getOvChipkaart()) {
+            ovChipkaartDao.save(ovChipkaart);
+        }
     }
 
     @Override
@@ -51,10 +54,17 @@ public class ReizigerDaoPsql implements IReizigerDao {
         if (reiziger.getAdres() != null) {
             adresDao.update(reiziger.getAdres());
         }
+        for (OvChipkaart ovChipkaart : reiziger.getOvChipkaart()) {
+            ovChipkaartDao.update(ovChipkaart);
+        }
     }
 
     @Override
     public void delete(Reiziger reiziger) throws SQLException {
+        for (OvChipkaart ovChipkaart : ovChipkaartDao.findByReiziger(reiziger)) {
+            ovChipkaartDao.delete(ovChipkaart);
+        }
+
         Adres adres = adresDao.findByReiziger(reiziger);
         if (adres != null) {
             adresDao.delete(adres);
@@ -119,6 +129,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
                 rs.getDate("geboortedatum")
         );
         reiziger.setAdres(adresDao.findByReiziger(reiziger));
+        reiziger.setOvChipkaart(ovChipkaartDao.findByReiziger(reiziger));
         return reiziger;
     }
 
