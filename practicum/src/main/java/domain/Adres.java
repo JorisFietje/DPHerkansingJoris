@@ -1,12 +1,29 @@
 package domain;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "adres")
 public class Adres {
 
+    @Id
+    @Column(name = "adres_id")
     private int adresId;
+
+    @Column(name = "postcode")
     private String postcode;
+
+    @Column(name = "huisnummer")
     private String huisnummer;
+
+    @Column(name = "straat")
     private String straat;
+
+    @Column(name = "woonplaats")
     private String woonplaats;
+
+    @OneToOne
+    @JoinColumn(name = "reiziger_id", nullable = false)
     private Reiziger reiziger;
 
     public Adres() {
@@ -70,7 +87,10 @@ public class Adres {
 
     @Override
     public String toString() {
-        return String.format("Adres [id=%d, %s %s, %s %s]",
-                adresId, straat, huisnummer, postcode, woonplaats);
+        String reizigerInfo = (reiziger == null)
+                ? "geen reiziger"
+                : "reiziger #" + reiziger.getReizigerId();
+        return String.format("Adres {#%d %s-%s, %s, %s}",
+                adresId, postcode, huisnummer, woonplaats, reizigerInfo);
     }
 }

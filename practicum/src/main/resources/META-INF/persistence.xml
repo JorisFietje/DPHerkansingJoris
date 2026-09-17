@@ -5,7 +5,7 @@
              version="3.0">
 
     <persistence-unit name="persistenceUnit">
-<!--        <class>domain.Adres</class>-->
+        <class>domain.Adres</class>
 <!--        <class>domain.OvChipkaart</class>-->
 <!--        <class>domain.Product</class>-->
         <class>domain.Reiziger</class>
