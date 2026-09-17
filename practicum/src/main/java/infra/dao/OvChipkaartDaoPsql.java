@@ -28,6 +28,10 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             pst.setInt(5, ovChipkaart.getReiziger().getReizigerId());
             pst.executeUpdate();
         }
+
+        for (Product product : ovChipkaart.getProducten()) {
+            productDao.save(product);
+        }
     }
 
     @Override
@@ -43,10 +47,20 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             pst.setInt(5, ovChipkaart.getKaartNummer());
             pst.executeUpdate();
         }
+
+        for (Product product : ovChipkaart.getProducten()) {
+            productDao.update(product);
+        }
     }
 
     @Override
     public void delete(OvChipkaart ovChipkaart) throws SQLException {
+        String koppelSql = "DELETE FROM ov_chipkaart_product WHERE kaart_nummer = ?";
+        try (PreparedStatement pst = connection.prepareStatement(koppelSql)) {
+            pst.setInt(1, ovChipkaart.getKaartNummer());
+            pst.executeUpdate();
+        }
+
         String sql = "DELETE FROM ov_chipkaart WHERE kaart_nummer = ?";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setInt(1, ovChipkaart.getKaartNummer());
@@ -61,12 +75,14 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
             pst.setInt(1, id);
             try (ResultSet rs = pst.executeQuery()) {
                 if (rs.next()) {
-                    return new OvChipkaart(
+                    OvChipkaart ovChipkaart = new OvChipkaart(
                             rs.getInt("kaart_nummer"),
                             rs.getDate("geldig_tot"),
                             rs.getBigDecimal("klasse").toBigInteger(),
                             rs.getBigDecimal("saldo")
                     );
+                    ovChipkaart.setProducten(productDao.findByOvChipkaart(ovChipkaart));
+                    return ovChipkaart;
                 }
                 return null;
             }
@@ -92,6 +108,9 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
                 }
             }
         }
+        for (OvChipkaart ovChipkaart : ovChipkaarten) {
+            ovChipkaart.setProducten(productDao.findByOvChipkaart(ovChipkaart));
+        }
         return ovChipkaarten;
     }
 
@@ -109,6 +128,9 @@ public class OvChipkaartDaoPsql implements IOvChipkaartDao {
                         rs.getBigDecimal("saldo")
                 ));
             }
+        }
+        for (OvChipkaart ovChipkaart : ovChipkaarten) {
+            ovChipkaart.setProducten(productDao.findByOvChipkaart(ovChipkaart));
         }
         return ovChipkaarten;
     }

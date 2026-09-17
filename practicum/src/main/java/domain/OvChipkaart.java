@@ -90,6 +90,14 @@ public class OvChipkaart {
         this.producten = producten;
     }
 
+    public void addProduct(Product product) {
+        product.addOvChipkaart(this);
+    }
+
+    public void removeProduct(Product product) {
+        product.removeOvChipkaart(this);
+    }
+
     @Override
     public String toString() {
         String reizigerInfo = (reiziger == null)
