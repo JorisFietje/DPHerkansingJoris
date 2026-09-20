@@ -1,6 +1,5 @@
 package domain;
 
-import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

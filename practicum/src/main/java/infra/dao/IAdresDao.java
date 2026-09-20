@@ -1,4 +1,7 @@
-package domain;
+package infra.dao;
+
+import domain.Adres;
+import domain.Reiziger;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -100,8 +100,8 @@ public class p2TestReizigerDao {
     }
 
     @Test
-    public void testFindByGeboorteDatum() throws SQLException {
-        List<Reiziger> reizigers = reizigerDao.findByGeboorteDatum(Date.valueOf("2002-09-17"));
+    public void testFindByGbdatum() throws SQLException {
+        List<Reiziger> reizigers = reizigerDao.findByGbdatum(Date.valueOf("2002-09-17"));
 
         assertAll(
                 () -> assertEquals(2, reizigers.size()),

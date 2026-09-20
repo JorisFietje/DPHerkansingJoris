@@ -1,6 +1,7 @@
 package p3OneToOneTests;
 
 import domain.*;
+import infra.dao.*;
 import globals.Psql;
 import infra.dao.AdresDaoPsql;
 import infra.dao.OvChipkaartDaoPsql;

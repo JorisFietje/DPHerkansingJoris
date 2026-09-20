@@ -1,7 +1,6 @@
 package infra.dao;
 
 import domain.Adres;
-import domain.IAdresDao;
 import domain.Reiziger;
 
 import java.sql.*;

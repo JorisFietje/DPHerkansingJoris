@@ -69,7 +69,7 @@ public class ReizigerDaoPsql implements IReizigerDao {
     }
 
     @Override
-    public List<Reiziger> findByGeboorteDatum(Date date) throws SQLException {
+    public List<Reiziger> findByGbdatum(Date date) throws SQLException {
         String sql = "SELECT * FROM reiziger WHERE geboortedatum = ?";
         List<Reiziger> reizigers = new ArrayList<>();
         try (PreparedStatement pst = connection.prepareStatement(sql)) {

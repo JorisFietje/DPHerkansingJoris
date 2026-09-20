@@ -1,18 +1,12 @@
 package p4OneToManyTests;
 
 import domain.*;
-import globals.Hibernate;
+import infra.dao.*;
 import globals.Psql;
 import infra.dao.AdresDaoPsql;
 import infra.dao.OvChipkaartDaoPsql;
 import infra.dao.ProductDaoPsql;
 import infra.dao.ReizigerDaoPsql;
-import infra.hibernate.AdresHibernate;
-import infra.hibernate.OvChipkaartDaoHibernate;
-import infra.hibernate.ReizigerHibernate;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
 import util.OvChipkaartUtils;
 import util.ReizigerUtils;

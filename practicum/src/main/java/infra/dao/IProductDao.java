@@ -1,4 +1,7 @@
-package domain;
+package infra.dao;
+
+import domain.OvChipkaart;
+import domain.Product;
 
 import java.sql.SQLException;
 import java.util.List;

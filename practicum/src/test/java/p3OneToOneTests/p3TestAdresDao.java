@@ -1,20 +1,14 @@
 package p3OneToOneTests;
 
 import domain.Adres;
-import domain.IAdresDao;
-import domain.IReizigerDao;
+import infra.dao.IAdresDao;
+import infra.dao.IReizigerDao;
 import domain.Reiziger;
-import globals.Hibernate;
 import globals.Psql;
 import infra.dao.AdresDaoPsql;
 import infra.dao.OvChipkaartDaoPsql;
 import infra.dao.ProductDaoPsql;
 import infra.dao.ReizigerDaoPsql;
-import infra.hibernate.AdresHibernate;
-import infra.hibernate.ReizigerHibernate;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
 import org.junit.jupiter.api.*;
 import util.AdresUtils;
 import util.SetupDatabase;
